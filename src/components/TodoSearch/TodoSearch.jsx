@@ -1,17 +1,14 @@
 import React from "react";
 import { TodoInputSearch } from "./TodoSearch.style";
 
+import { TodoContext } from "../../context/TodoContext";
 
-
-export default function TodoSearch({onSearch, search}) {
-
-React .useEffect(() => {
-console.log("search", search);
-}, []);
-
+export default function TodoSearch() {
+  const {onSearch, search, isLoading} = React.useContext(TodoContext);
+  
   return (
   <div>
-    <TodoInputSearch value={search} onChange = {onSearch} type = "text" placeholder="Search todos..." />
+    <TodoInputSearch value={search} onChange = {onSearch} type = "text" placeholder={isLoading ? "Cargando...": "Buscar"} />
    
   </div>
   ) ;

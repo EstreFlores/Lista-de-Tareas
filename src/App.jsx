@@ -8,6 +8,7 @@ import TodoModal from './components/TodoModal/TodoModal';
 import TodoCreate from './components/TodoCreate/TodoCreate';
 
 import { Appcontainer } from "./App.styles"
+import { TodoContext } from './context/TodoContext'; 
 
 //creando un nuevo componente
 /* 
@@ -20,87 +21,24 @@ function AppData (props) {
 }
   */
 
-const allTask = [
-  {title: "Hacer almuerzo", completed: false},
-  {title: "Lavar los platos", completed: true},
-  {title: "Estudiar React", completed: true},
-  {title: "Hacer la compra", completed: true},
-  {title: "Lavar la ropa", completed: false},
-  {title: "Limpiar la casa", completed: false},
-  {title: "Hacer ejercicio", completed: true},
-]
 
 function App() {
+  const {task, showModal, onComplete, onDelete, search, isLoading} = React.useContext(TodoContext);
   
-  const [showModal, setShowModal] = React.useState(true);
+  //localStorage.setItem("tasks", JSON.stringify(task)); 
 
-  const [task, setTask] = React.useState(allTask);
-
-  const [search, setSearch] = React.useState("");
-
-  const [newTaskInput, setNewTaskInput] = React.useState("");
-
-  const taskCount = task.length;
-  const completedTask = task.filter((task) => task.completed).length;
-
-  const onComplete = (item) => {
-   const newTask = task.map(t => {
-      if (t.title === item.title) {
-        return {
-          ...t,
-          completed: !t.completed
-        }
-      }
-      return t;
-    })
-    setTask(newTask);
-   };
-  
-
-  const onDelete = (item) => {
-   const newTask = task.filter(t => t.title !== item.title);
-    setTask(newTask);
-  }
-
-  
-  const onSearch = (e) => {
-    setSearch(e.target.value);
-  }
-
-  const onShowModal = () => {
-  setShowModal(true);
-  }
-
-  const onCloseModal = () => {
-    setShowModal(false);
-  }
-
-  const addTask = (e) => {
-   e.preventDefault();
-   const newTask = [...task, {title: newTaskInput, completed: false}];
-   setTask(newTask);
-   setNewTaskInput("");
-   setShowModal(false);
-  };
-
-  const onNewTask = (e) => {
-    setNewTaskInput(e.target.value);
-  }
   
   return( 
   <Appcontainer>
-       <TodoTitle
-        onShowModal={onShowModal}
-        taskCount={taskCount}
-        completedTask={completedTask}
-       />
+       <TodoTitle/>
 
-       <TodoSearch onSearch={onSearch}search={search} />
+       <TodoSearch />
 
        <TodoCardList>
+        {isLoading && <div>Loading...</div>}
 
         {task
-        .filter(t => t.title.toLowerCase().includes(search.toLowerCase()))
+        .filter((t) => t.title.toLowerCase().includes(search.toLowerCase()))
         .map((item, index) => (
           <TodoCard
           key={index}
@@ -121,16 +59,9 @@ function App() {
      
       {showModal && (
         <TodoModal >
-          <TodoCreate 
-          onNewTask={onNewTask}
-          addTask={addTask} 
-          onCloseModal={onCloseModal}/>
+          <TodoCreate/>
       </TodoModal>
       )}
-      
-
-      
-      
       
     </Appcontainer>
   );

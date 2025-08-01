@@ -1,13 +1,15 @@
 import React from 'react'
 import { TodoTitleContainer, TodoTitleText, TodoButtonAdd } from "./TodoTitleStyle.style";
+import { TodoContext } from '../../context/TodoContext';
 
-export default function TodoTitle({ taskCount, completedTask, onShowModal }) {
+export default function TodoTitle() {
+  const {isLoading, completedTask, taskCount,  onShowModal } = React.useContext(TodoContext);
   return (
     <TodoTitleContainer>
       <TodoTitleText>
-        Tarea {completedTask} de {taskCount}
+        {isLoading ? "Loading..." :  `Tarea ${completedTask} de ${taskCount} `}
       </TodoTitleText>
-      <TodoButtonAdd onClick={onShowModal}>+</TodoButtonAdd>
+      <TodoButtonAdd disabled={isLoading} onClick= {onShowModal}>+</TodoButtonAdd>
     </TodoTitleContainer>
   );
 }

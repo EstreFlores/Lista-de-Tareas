@@ -1,7 +1,10 @@
 import React from 'react'
 import{TodoContent, TodoContentHeader, TodoContentBotton, TodoModalBody, TodoTextArea, TodoButtonCreate} from './TodoCreate.style.js'
 
-export default function TodoCreate({addTask, onCloseModal, onNewTask}) {
+import {TodoContext} from '../../context/TodoContext.jsx'
+
+export default function TodoCreate() {
+  const {onNewTask, addTask, onCloseModal} = React.useContext(TodoContext);
   return (
    <TodoContent onSubmit={addTask}>
     <TodoContentHeader>
