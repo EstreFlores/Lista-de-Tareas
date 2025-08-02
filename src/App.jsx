@@ -10,6 +10,9 @@ import TodoCreate from './components/TodoCreate/TodoCreate';
 import { Appcontainer } from "./App.styles"
 import { TodoContext } from './context/TodoContext'; 
 
+import SplashScreen from './components/SplashScreen/SplashScreen';
+import TodoProgress from './components/TodoProgress/TodoProgress';
+
 //creando un nuevo componente
 /* 
 function AppData (props) {
@@ -27,10 +30,27 @@ function App() {
   
   //localStorage.setItem("tasks", JSON.stringify(task)); 
 
+  // aki estoy agregando la nueva funcion qe es la de bienvenida
+   const [isSplashVisible, setIsSplashVisible] = React.useState(true);
+
+    React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsSplashVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (isSplashVisible) return <SplashScreen />;
+
+
+
   
   return( 
   <Appcontainer>
        <TodoTitle/>
+
+       <TodoProgress />
 
        <TodoSearch />
 

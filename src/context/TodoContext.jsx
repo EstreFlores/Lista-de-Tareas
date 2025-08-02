@@ -15,6 +15,10 @@ import useStorage from '../hooks/useStorage';
 const TodoContext = createContext();
 
 const TodoProvider = ({children}) => {
+
+  //para guardar la fecha de vencimiento
+  const [dueDate, setDueDate] = React.useState("");
+
   const {data: task, isLoading, isError, saveData:setTask  } = useStorage("tasks", []);
 
   const [showModal, setShowModal] = React.useState(false);
@@ -62,15 +66,21 @@ const TodoProvider = ({children}) => {
 
   const addTask = (e) => {
    e.preventDefault();
-   const newTask = [...task, {title: newTaskInput, completed: false}];
+   const newTask = [...task, {title: newTaskInput, completed: false,  dueDate}];
    setTask(newTask);
    setNewTaskInput("");
+   setDueDate(""); // Limpia aki la fecha de venc
    setShowModal(false);
   };
 
   const onNewTask = (e) => {
     setNewTaskInput(e.target.value);
   };
+
+  // aki estoy creando a funcion para guardar la fecha de vencimiento
+  const onDueDateChange = (e) => {
+  setDueDate(e.target.value);
+};
 
 
     return (
@@ -89,7 +99,9 @@ const TodoProvider = ({children}) => {
             addTask,
             onNewTask,
             isLoading,
-            isError
+            isError,
+             dueDate,
+             onDueDateChange
             
         }}>
         {children}
